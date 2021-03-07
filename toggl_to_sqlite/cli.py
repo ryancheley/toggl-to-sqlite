@@ -5,14 +5,6 @@ import requests
 import sqlite_utils
 from . import utils
 
-import click
-import json
-import urllib.parse
-import requests
-import sqlite_utils
-from . import utils
-
-
 @click.group()
 @click.version_option()
 def cli():
@@ -70,6 +62,5 @@ def fetch(db_path, auth, all, silent):
     "Save Toggl data to a SQLite database"
     auth = json.load(open(auth))
     db = sqlite_utils.Database(db_path)
-    print('Test')
     fetch = utils.get_data()
     utils.save_items(fetch, db)
