@@ -1,5 +1,11 @@
 # toggl-to-sqlite
 
+[![PyPI](https://img.shields.io/pypi/v/toggl-to-sqlite.svg)](https://pypi.org/project/toggl-to-sqlite/)
+[![GitHub changelog](https://img.shields.io/github/v/release/ryancheley/toggl-to-sqlite?include_prereleases&label=changelog)](https://github.com/ryancheley/toggl-to-sqlite/releases)
+[![Tests](https://github.com/ryancheley/toggl-to-sqlite/workflows/Test/badge.svg)](https://github.com/ryancheley/toggl-to-sqlite/actions?query=workflow%3ATest)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/ryancheley/toggl-to-sqlite/blob/main/LICENSE)
+
+
 Create a SQLite database containing data from your [Toggl](https://toggl.com/) account.
 
 ## How to install
@@ -13,7 +19,7 @@ You will need to first obtain a valid OAuth token for your toggl account. You ca
     $ toggl-to-sqlite auth
     You will need to get your API Token from this page
 
-    https://track.toggl.com/profile...
+    https://track.toggl.com/profile
 
     Once you have your API Token enter it at the command line. 
     
@@ -23,7 +29,6 @@ Now you can fetch all of your items from toggl like this:
 
     $ toggl-to-sqlite fetch toggl.db
 
-The first time you run this command it will fetch all of your items, and display a progress bar while it does it.
 
 ## Using with Datasette
 
