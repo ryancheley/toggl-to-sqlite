@@ -27,7 +27,7 @@ def auth(auth):
             "https://track.toggl.com/profile"
         )
     api_token = input(
-        "Once you have signed in there, copy your API Toekn at the bottom of the page, paste it here, and press <enter>"
+        "Once you have signed in there, copy your API Toekn at the bottom of the page, paste it here, and press <enter>: "
         )
     # Now exchange the request_token for an access_token
 
