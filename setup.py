@@ -1,7 +1,7 @@
 from setuptools import setup
 import os
 
-VERSION = "0.1.3"
+VERSION = "0.1.4"
 
 
 def get_long_description():
@@ -28,5 +28,5 @@ setup(
     """,
     install_requires=["sqlite-utils>=2.4.4", "click", "requests"],
     extras_require={"test": ["pytest"]},
-    # tests_require=["toggl-to-sqlite[test]"],
+    tests_require=["toggl-to-sqlite[test]"],
 )
