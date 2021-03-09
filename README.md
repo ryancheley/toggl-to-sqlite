@@ -29,6 +29,18 @@ Now you can fetch all of your items from toggl like this:
 
     $ toggl-to-sqlite fetch toggl.db
 
+You can choose to get only `time_entries`, `projects`, or `workspaces` by speciying a type in the argument like this. 
+
+To get ONLY your workspaces:
+
+    $ toggl-to-sqlite fetch -t workspaces toggl.db
+
+To get your workspaces and projects:
+
+    $ toggl-to-sqlite fetch -t workspaces -t projects toggl.db
+
+The default is to get all three of `time_entries`, `projects`, and `workspaces`
+
 
 ## Using with Datasette
 
