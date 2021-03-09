@@ -14,7 +14,7 @@ def load():
 @pytest.fixture(scope="session")
 def converted():
     db = sqlite_utils.Database(":memory:")
-    utils.save_items(load(), db)
+    utils.save_items(load(), "time_entries", db)
     return db
 
 

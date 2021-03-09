@@ -52,11 +52,17 @@ def auth(auth):
     default="auth.json",
     help="Path to auth tokens, defaults to auth.json",
 )
-@click.option("-a", "--all", is_flag=True, help="Fetch all items (not just new ones)")
-@click.option("-s", "--silent", is_flag=True, help="Don't show progress bar")
-def fetch(db_path, auth, all, silent):
+@click.option("-t", "--type", default=["time_entries", "workspaces", "projects"], required=True, multiple=True)
+def fetch(db_path, auth, type):
     "Save Toggl data to a SQLite database"
     auth = json.load(open(auth))
     db = sqlite_utils.Database(db_path)
-    fetch = utils.get_data()
-    utils.save_items(fetch, db)
+    if "time_entries" in type:
+        time_entries = utils.get_time_entries()
+        utils.save_items(time_entries, "time_entries" ,db)
+    if "workspaces" in type:
+        workspaces = utils.get_workspaces()
+        utils.save_items(workspaces, "workspaces", db)
+    if "projects" in type:
+        projects = utils.get_projects()
+        utils.save_items(projects, "projects" ,db)
