@@ -4,18 +4,9 @@ import datetime
 import math
 
 
-try:
-    with open("auth.json", "r") as f:
-        auth = json.load(f)
-
-    API_TOKEN = auth["api_token"]
-except FileNotFoundError:
-    pass
-
-
-def get_start_datetime():
+def get_start_datetime(api_token):
     toggl = requests.get(
-        "https://api.track.toggl.com/api/v8/me", auth=(API_TOKEN, "api_token")
+        "https://api.track.toggl.com/api/v8/me", auth=(api_token, "api_token")
     )
     data = json.loads(toggl.text)
     start_time = data["data"]["workspaces"][0]["at"]
@@ -23,26 +14,26 @@ def get_start_datetime():
     return start_time.date()
 
 
-def get_workspaces():
+def get_workspaces(api_token):
     workspaces = []
-    response = requests.get('https://api.track.toggl.com/api/v8/workspaces', auth=(API_TOKEN, 'api_token'))
+    response = requests.get('https://api.track.toggl.com/api/v8/workspaces', auth=(api_token, 'api_token'))
     workspaces.append(json.loads(response.text))
     return workspaces
     
 
-def get_projects():
+def get_projects(api_token):
     projects = []
-    workspaces = get_workspaces()
+    workspaces = get_workspaces(api_token)
     for workspace in workspaces[0]:
-        response = requests.get(f'https://api.track.toggl.com/api/v8/workspaces/{workspace["id"]}/projects', auth=(API_TOKEN, 'api_token'))
+        response = requests.get(f'https://api.track.toggl.com/api/v8/workspaces/{workspace["id"]}/projects', auth=(api_token, 'api_token'))
         project = json.loads(response.text)
         if project:
             projects.append(project)
     return projects
 
 
-def get_time_entries(days=100):
-    start_date = get_start_datetime()
+def get_time_entries(api_token, days=100):
+    start_date = get_start_datetime(api_token)
     today = datetime.date.today()
     cycles = math.ceil((today - start_date).days / days)
 
@@ -62,10 +53,12 @@ def get_time_entries(days=100):
         response = requests.get(
             "https://api.track.toggl.com/api/v8/time_entries",
             params=params,
-            auth=(API_TOKEN, "api_token"),
+            auth=(api_token, "api_token"),
         )
         data.append(json.loads(response.text))
     return data
+
+
 
 
 def save_items(items, table, db):

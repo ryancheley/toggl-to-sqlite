@@ -58,11 +58,11 @@ def fetch(db_path, auth, type):
     auth = json.load(open(auth))
     db = sqlite_utils.Database(db_path)
     if "time_entries" in type:
-        time_entries = utils.get_time_entries()
+        time_entries = utils.get_time_entries(api_token=auth["api_token"])
         utils.save_items(time_entries, "time_entries" ,db)
     if "workspaces" in type:
-        workspaces = utils.get_workspaces()
+        workspaces = utils.get_workspaces(api_token=auth["api_token"])
         utils.save_items(workspaces, "workspaces", db)
     if "projects" in type:
-        projects = utils.get_projects()
+        projects = utils.get_projects(api_token=auth["api_token"])
         utils.save_items(projects, "projects" ,db)
