@@ -53,8 +53,9 @@ def auth(auth):
     help="Path to auth tokens, defaults to auth.json",
 )
 @click.option("-d", "--days", required=True, type=int, default=25)
+@click.option("-s", "--since", type=click.DateTime())
 @click.option("-t", "--type", default=["time_entries", "workspaces", "projects"], required=True, multiple=True)
-def fetch(db_path, auth, type, days):
+def fetch(db_path, auth, days, since, type):
     "Save Toggl data to a SQLite database"
     auth = json.load(open(auth))
     db = sqlite_utils.Database(db_path)

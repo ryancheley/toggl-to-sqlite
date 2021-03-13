@@ -4,13 +4,16 @@ import datetime
 import math
 
 
-def get_start_datetime(api_token):
+def get_start_datetime(api_token, since=None):
     toggl = requests.get(
         "https://api.track.toggl.com/api/v8/me", auth=(api_token, "api_token")
     )
     data = json.loads(toggl.text)
-    start_time = data["data"]["workspaces"][0]["at"]
-    start_time = datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S+00:00")
+    if not since:
+        start_time = data["data"]["workspaces"][0]["at"]
+        start_time = datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S+00:00")
+    else:
+        start_time = since
     return start_time.date()
 
 
@@ -39,7 +42,7 @@ def get_time_entries(api_token, days):
 
     data = []
 
-    for cycle in range(cycles-1):
+    for cycle in range(cycles):
         _start_date = (start_date + datetime.timedelta(days=days) * cycle).strftime(
             "%Y-%m-%dT00:00:00-00:00"
         )
