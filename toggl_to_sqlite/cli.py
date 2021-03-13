@@ -52,13 +52,15 @@ def auth(auth):
     default="auth.json",
     help="Path to auth tokens, defaults to auth.json",
 )
+@click.option("-d", "--days", required=True, type=int, default=25)
 @click.option("-t", "--type", default=["time_entries", "workspaces", "projects"], required=True, multiple=True)
-def fetch(db_path, auth, type):
+def fetch(db_path, auth, type, days):
     "Save Toggl data to a SQLite database"
     auth = json.load(open(auth))
     db = sqlite_utils.Database(db_path)
+    days = days
     if "time_entries" in type:
-        time_entries = utils.get_time_entries(api_token=auth["api_token"])
+        time_entries = utils.get_time_entries(api_token=auth["api_token"], days=days)
         utils.save_items(time_entries, "time_entries" ,db)
     if "workspaces" in type:
         workspaces = utils.get_workspaces(api_token=auth["api_token"])

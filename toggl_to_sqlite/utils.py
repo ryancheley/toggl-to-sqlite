@@ -32,14 +32,14 @@ def get_projects(api_token):
     return projects
 
 
-def get_time_entries(api_token, days=100):
+def get_time_entries(api_token, days):
     start_date = get_start_datetime(api_token)
     today = datetime.date.today()
     cycles = math.ceil((today - start_date).days / days)
 
     data = []
 
-    for cycle in range(cycles):
+    for cycle in range(cycles-1):
         _start_date = (start_date + datetime.timedelta(days=days) * cycle).strftime(
             "%Y-%m-%dT00:00:00-00:00"
         )
