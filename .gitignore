@@ -133,3 +133,4 @@ dmypy.json
 auth.json
 .coveragerc
 *.db
+tests/test_hidden.py
