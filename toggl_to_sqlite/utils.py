@@ -59,8 +59,6 @@ def get_time_entries(api_token, days):
     return data
 
 
-
-
 def save_items(items, table, db):
     for item in items:
         data = item
