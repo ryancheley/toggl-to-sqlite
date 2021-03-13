@@ -60,8 +60,9 @@ def fetch(db_path, auth, days, since, type):
     auth = json.load(open(auth))
     db = sqlite_utils.Database(db_path)
     days = days
+    since = since
     if "time_entries" in type:
-        time_entries = utils.get_time_entries(api_token=auth["api_token"], days=days)
+        time_entries = utils.get_time_entries(api_token=auth["api_token"], days=days, since=since)
         utils.save_items(time_entries, "time_entries" ,db)
     if "workspaces" in type:
         workspaces = utils.get_workspaces(api_token=auth["api_token"])
