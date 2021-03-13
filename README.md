@@ -14,7 +14,7 @@ Create a SQLite database containing data from your [Toggl](https://toggl.com/) a
 
 ## Usage
 
-You will need to first obtain a valid OAuth token for your toggl account. You can do this by running the `auth` command and following the prompts:
+You will need to first obtain a valid API token for your toggl account. You can do this by running the `auth` command and following the prompts:
 
     $ toggl-to-sqlite auth
     You will need to get your API Token from this page
@@ -41,7 +41,11 @@ To get your workspaces and projects:
 
 The default is to get all three of `time_entries`, `projects`, and `workspaces`
 
+Additionally, you can specify to get time_entries since a specific date. You do this by specifying the `since` option:
+
+    $ toggl-to-sqlite fetch -s 2021-03-13
 
 ## Using with Datasette
 
 The SQLite database produced by this tool is designed to be browsed using [Datasette](https://datasette.readthedocs.io/). Use the [datasette-render-timestamps](https://github.com/simonw/datasette-render-timestamps) plugin to improve the display of the timestamp values.
+
