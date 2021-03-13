@@ -10,8 +10,11 @@ import random
 
 
 def load_auth():
-    json_path = pathlib.Path(__file__).parents[1] / "auth.json"
-    return json.load(open(json_path, "r"))
+    try:
+        json_path = pathlib.Path(__file__).parents[1] / "auth.json"
+        return json.load(open(json_path, "r"))
+    except FileNotFoundError:
+        return {"api_token": "api_token"}
 
 API_TOKEN = load_auth()['api_token']
 
