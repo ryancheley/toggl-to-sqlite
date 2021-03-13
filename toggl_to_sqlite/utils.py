@@ -65,16 +65,3 @@ def save_items(items, table, db):
     for item in items:
         data = item
         db[table].insert_all(data, pk="id", alter=True, replace=True)
-
-
-def transform(item):
-    for key in (
-        "id",
-        "pid",
-        "tid",
-        "uid",
-        "dur",
-        "billable",
-    ):
-        if key in item:
-            item[key] = int(item[key])
