@@ -7,6 +7,7 @@ import pathlib
 import requests
 import datetime
 import random
+import requests_mock
 
 
 def load():
@@ -28,7 +29,6 @@ def test_tables(converted):
 def test_item(converted):
     item = list(converted["time_entries"].rows)[0]
     print(item)
-    # assert 1 == 0
     assert {
         "id": 436691234,
         "wid": 777,
@@ -42,6 +42,7 @@ def test_item(converted):
         "at": "2013-03-11T15:36:58+00:00",
     } == item
 
+
 def test_get_start_datetime_bad_api_token():
     api_token = "api_token"
     start_date = utils.get_start_datetime(api_token=api_token)
@@ -53,11 +54,17 @@ def test_get_workspaces_bad_api_token():
     workspaces = utils.get_workspaces(api_token=api_token)
     assert workspaces == []
 
+
 def test_get_projects_bad_api():
     api_token = "api_token"
     actual = utils.get_projects(api_token=api_token)
     expected = []
     assert actual == expected
+
+
+def test_get_projects_good_api():
+    # TODO: Write test
+    pass
 
 
 def test_get_time_entries_bad_api():
@@ -67,188 +74,151 @@ def test_get_time_entries_bad_api():
     assert actual == expepected
 
 
-def test_get_time_entries_bad_days():
-    """
-        This will work with either a valid or invalid token
-    """
-    days = random.randrange(-100, 0)
-    print(days)
-    api_token = "api_token"
-    actual = utils.get_time_entries(api_token=api_token, days=days)
-    expepected = []
-    assert actual == expepected
-
-
-def test_get_start_datetime_good_api_token_blank_since(monkeypatch):
-    def mockreturn(api_token):
-        return datetime.date(2019, 12, 4)
-
-    monkeypatch.setattr(utils, "get_start_datetime", mockreturn)    
-
-    x = datetime.date(2019, 12, 4)
-    assert x == utils.get_start_datetime("api_token")
-
-
-def test_get_start_datetime_good_api_token_non_blank_since(monkeypatch):
-    def mockreturn(api_token, since):
-        return datetime.date(2020, 12, 4)
-
-    monkeypatch.setattr(utils, "get_start_datetime", mockreturn)    
-
-    since = datetime.date(2020, 12, 4)
-    assert since == utils.get_start_datetime("api_token", "since")
-
-
-def test_get_workspaces_good_api_token(monkeypatch):
-    def mockreturn(api_token):
-        workspace = [
-                        [
-                            {
-                                'id': 0, 
-                                'name': "My workspace", 
-                                'profile': 0, 
-                                'premium': False, 
-                                'admin': True, 
-                                'default_hourly_rate': 0, 
-                                'default_currency': 'USD', 
-                                'only_admins_may_create_projects': False, 
-                                'only_admins_see_billable_rates': False, 
-                                'only_admins_see_team_dashboard': False, 
-                                'projects_billable_by_default': True, 
-                                'rounding': 1, 
-                                'rounding_minutes': 0, 
-                                'api_token': 'api_token', 
-                                'at': '2016-12-15T06:53:39+00:00', 
-                                'ical_enabled': True
-                            },
-                        ]
-        ]
-        return workspace
-
-    monkeypatch.setattr(utils, "get_workspaces", mockreturn)    
-
-    expected_workspace =         workspace = [
-                        [
-                            {
-                                'id': 0, 
-                                'name': "My workspace", 
-                                'profile': 0, 
-                                'premium': False, 
-                                'admin': True, 
-                                'default_hourly_rate': 0, 
-                                'default_currency': 'USD', 
-                                'only_admins_may_create_projects': False, 
-                                'only_admins_see_billable_rates': False, 
-                                'only_admins_see_team_dashboard': False, 
-                                'projects_billable_by_default': True, 
-                                'rounding': 1, 
-                                'rounding_minutes': 0, 
-                                'api_token': 'api_token', 
-                                'at': '2016-12-15T06:53:39+00:00', 
-                                'ical_enabled': True
-                            },
-                        ]
-        ]
-
-    assert utils.get_workspaces("api_token") == expected_workspace
-
-
-def test_get_projects_good_api(monkeypatch):
-    def mockreturn(api_token):
-        return [
-            [
-                {
-                    'id': 1, 
-                    'wid': 2, 
-                    'name': 'Project', 
-                    'billable': False, 
-                    'is_private': True, 
-                    'active': True, 
-                    'template': False, 
-                    'at': '2020-06-09T04:02:21+00:00', 
-                    'created_at': '2019-12-04T05:02:20+00:00', 
-                    'color': '0', 
-                    'auto_estimates': False, 
-                    'actual_hours': 42, 
-                    'hex_color': '#0b83d9'
-                }
-            ]
-        ]
-
-    monkeypatch.setattr(utils, "get_projects", mockreturn)    
-
-    expected_projects = [
-            [
-                {
-                    'id': 1, 
-                    'wid': 2, 
-                    'name': 'Project', 
-                    'billable': False, 
-                    'is_private': True, 
-                    'active': True, 
-                    'template': False, 
-                    'at': '2020-06-09T04:02:21+00:00', 
-                    'created_at': '2019-12-04T05:02:20+00:00', 
-                    'color': '0', 
-                    'auto_estimates': False, 
-                    'actual_hours': 42, 
-                    'hex_color': '#0b83d9'
-                }
-            ]
-        ]
-    assert expected_projects == utils.get_projects("api_token")
-
-
-def test_get_time_entries_since_in_the_future(monkeypatch):
-    def mockreturn(api_token, days, since):
-        return []
-
-    monkeypatch.setattr(utils, "get_time_entries", mockreturn)    
-
-    x = []
-    assert x == utils.get_time_entries("api_token", "days", "since")
-
 def test_get_time_entries_good_api(monkeypatch):
-    def mockreturn(api_token, days):
-        return [
-            [
-                {
-                    'id': 1, 
-                    'guid': 'itsameemailadminsitration', 
-                    'wid': 1, 
-                    'pid': 1, 
-                    'billable': False, 
-                    'start': '2019-12-04T15:18:28+00:00', 
-                    'stop': '2019-12-04T15:28:37+00:00', 
-                    'duration': 42, 
-                    'description': 'Email', 
-                    'tags': ['Email'], 
-                    'duronly': False, 
-                    'at': '2019-12-05T03:04:29+00:00', 
-                    'uid': 1
-                }
-            ]
-        ]
+    expected_time_entires = [
+        {
+            "data": {
+                "id": 436694100,
+                "pid": 123,
+                "wid": 777,
+                "start": "2013-03-05T07:58:58.000Z",
+                "duration": 1200,
+                "description": "Meeting with possible clients",
+                "tags": ["billed"],
+            }
+        }
+    ]
 
-    monkeypatch.setattr(utils, "get_time_entries", mockreturn)    
+    def mock_get_start_datetime(api_token, since):
+        return datetime.datetime(2021, 4, 1, 0, 0).date()
 
-    x = [
-            [
+    monkeypatch.setattr(utils, "get_start_datetime", mock_get_start_datetime)
+
+    with requests_mock.Mocker() as rm:
+        return_value = {
+            "data": {
+                "id": 436694100,
+                "pid": 123,
+                "wid": 777,
+                "start": "2013-03-05T07:58:58.000Z",
+                "duration": 1200,
+                "description": "Meeting with possible clients",
+                "tags": ["billed"],
+            }
+        }
+        rm.get(
+            "https://api.track.toggl.com/api/v8/time_entries?start_date=2021-04-01T00%3A00%3A00-00%3A00&end_date=2021-07-10T00%3A00%3A00-00%3A00",
+            status_code=200,
+            json=return_value,
+        )
+        response = utils.get_time_entries("api_token", days=100)
+    assert response == expected_time_entires
+
+
+def test_get_get_workspaces():
+    expected_workspaces = [
+        {
+            "data": [
                 {
-                    'id': 1, 
-                    'guid': 'itsameemailadminsitration', 
-                    'wid': 1, 
-                    'pid': 1, 
-                    'billable': False, 
-                    'start': '2019-12-04T15:18:28+00:00', 
-                    'stop': '2019-12-04T15:28:37+00:00', 
-                    'duration': 42, 
-                    'description': 'Email', 
-                    'tags': ['Email'], 
-                    'duronly': False, 
-                    'at': '2019-12-05T03:04:29+00:00', 
-                    'uid': 1
-                }
+                    "id": 3134975,
+                    "name": "John's personal ws",
+                    "default_hourly_rate": 50,
+                    "default_currency": "USD",
+                    "rounding": 1,
+                    "rounding_minutes": 15,
+                    "at": "2013-08-28T16:22:21+00:00",
+                    "logo_url": "my_logo.png",
+                },
+                {
+                    "id": 777,
+                    "name": "My Company Inc",
+                    "default_hourly_rate": 40,
+                    "default_currency": "EUR",
+                    "rounding": 1,
+                    "rounding_minutes": 15,
+                    "at": "2013-08-28T16:22:21+00:00",
+                },
             ]
-        ]
-    assert x == utils.get_time_entries("api_token", "days")
+        }
+    ]
+    with requests_mock.Mocker() as rm:
+        return_value = {
+            "data": [
+                {
+                    "id": 3134975,
+                    "name": "John's personal ws",
+                    "default_hourly_rate": 50,
+                    "default_currency": "USD",
+                    "rounding": 1,
+                    "rounding_minutes": 15,
+                    "at": "2013-08-28T16:22:21+00:00",
+                    "logo_url": "my_logo.png",
+                },
+                {
+                    "id": 777,
+                    "name": "My Company Inc",
+                    "default_hourly_rate": 40,
+                    "default_currency": "EUR",
+                    "rounding": 1,
+                    "rounding_minutes": 15,
+                    "at": "2013-08-28T16:22:21+00:00",
+                },
+            ]
+        }
+        rm.get(
+            "https://api.track.toggl.com/api/v8/workspaces",
+            status_code=200,
+            json=return_value,
+        )
+        response = utils.get_workspaces("api_token")
+    assert response == expected_workspaces
+
+
+def test_get_start_datetime_with_good_api_token_and_since():
+    expected_start_time = datetime.datetime(2021, 4, 1, 0, 0)
+    with requests_mock.Mocker() as rm:
+        return_value = {
+            "data": {
+                "description": "New time entry",
+                "start": "2013-02-12T15:35:47+02:00",
+                "wid": 31366,
+                "pid": 9012,
+                "duration": 1200,
+                "stop": "2013-02-12T15:35:57+02:00",
+                "tags": ["billed"],
+                "id": 4269795,
+                "workspaces": [{"at": "2021-01-01T15:35:47+00:00"}],
+            }
+        }
+        rm.get(
+            "https://api.track.toggl.com/api/v8/me", status_code=200, json=return_value
+        )
+
+        response = utils.get_start_datetime("api_token", expected_start_time)
+        assert response == expected_start_time.date()
+
+
+def test_get_start_datetime_with_good_api_token_and_blank_since():
+    expected_start_time = datetime.date(2021, 1, 1)
+    with requests_mock.Mocker() as rm:
+        return_value = {
+            "data": {
+                "description": "New time entry",
+                "start": "2013-02-12T15:35:47+02:00",
+                "wid": 31366,
+                "pid": 9012,
+                "duration": 1200,
+                "stop": "2013-02-12T15:35:57+02:00",
+                "tags": ["billed"],
+                "id": 4269795,
+                "workspaces": [{"at": "2021-01-01T15:35:47+00:00"}],
+            }
+        }
+        rm.get(
+            "https://api.track.toggl.com/api/v8/me", status_code=200, json=return_value
+        )
+
+        response = utils.get_start_datetime("api_token")
+    print(response)
+
+    assert response == expected_start_time
