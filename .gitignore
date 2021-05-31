@@ -134,3 +134,6 @@ auth.json
 .coveragerc
 *.db
 tests/test_hidden.py
+
+# Jupyter Notebooks
+*.ipynb
