@@ -62,9 +62,24 @@ def test_get_projects_bad_api():
     assert actual == expected
 
 
-def test_get_projects_good_api():
-    # TODO: Write test
-    pass
+def test_get_projects_good_api(monkeypatch):
+    execpted_projects = [{"id": 1}]
+
+    def mock_get_workspaces(api_token):
+        return [[{"id": 1}]]
+
+    monkeypatch.setattr(utils, "get_workspaces", mock_get_workspaces)
+
+    with requests_mock.Mocker() as rm:
+        return_value = {"id": 1}
+        rm.get(
+            "https://api.track.toggl.com/api/v8/workspaces/1/projects",
+            status_code=200,
+            json=return_value,
+        )
+        response = utils.get_projects("api_token")
+
+    assert execpted_projects == response
 
 
 def test_get_time_entries_bad_api():
