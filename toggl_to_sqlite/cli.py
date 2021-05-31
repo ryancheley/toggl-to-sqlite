@@ -54,7 +54,13 @@ def auth(auth):
 )
 @click.option("-d", "--days", required=True, type=int, default=25)
 @click.option("-s", "--since", type=click.DateTime())
-@click.option("-t", "--type", default=["time_entries", "workspaces", "projects"], required=True, multiple=True)
+@click.option(
+    "-t",
+    "--type",
+    default=["time_entries", "workspaces", "projects"],
+    required=True,
+    multiple=True,
+)
 def fetch(db_path, auth, days, since, type):
     "Save Toggl data to a SQLite database"
     auth = json.load(open(auth))
@@ -62,11 +68,13 @@ def fetch(db_path, auth, days, since, type):
     days = days
     since = since
     if "time_entries" in type:
-        time_entries = utils.get_time_entries(api_token=auth["api_token"], days=days, since=since)
-        utils.save_items(time_entries, "time_entries" ,db)
+        time_entries = utils.get_time_entries(
+            api_token=auth["api_token"], days=days, since=since
+        )
+        utils.save_items(time_entries, "time_entries", db)
     if "workspaces" in type:
         workspaces = utils.get_workspaces(api_token=auth["api_token"])
         utils.save_items(workspaces, "workspaces", db)
     if "projects" in type:
         projects = utils.get_projects(api_token=auth["api_token"])
-        utils.save_items(projects, "projects" ,db)
+        utils.save_items(projects, "projects", db)
