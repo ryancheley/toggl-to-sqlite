@@ -29,6 +29,10 @@ Now you can fetch all of your items from toggl like this:
 
     $ toggl-to-sqlite fetch toggl.db
 
+**NB!** By default `toggl-to-sqlite` only fetches data from the 25 previous days. As an alternative you can specify to get time_entries since a specific date. You do this by specifying the `since` option:
+
+    $ toggl-to-sqlite fetch -s 2021-03-13
+
 You can choose to get only `time_entries`, `projects`, or `workspaces` by speciying a type in the argument like this. 
 
 To get ONLY your workspaces:
@@ -40,10 +44,6 @@ To get your workspaces and projects:
     $ toggl-to-sqlite fetch -t workspaces -t projects toggl.db
 
 The default is to get all three of `time_entries`, `projects`, and `workspaces`
-
-Additionally, you can specify to get time_entries since a specific date. You do this by specifying the `since` option:
-
-    $ toggl-to-sqlite fetch -s 2021-03-13
 
 ## Using with Datasette
 
