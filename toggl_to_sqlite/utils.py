@@ -44,6 +44,7 @@ def get_projects(api_token):
         for workspace in workspaces[0]:
             response = requests.get(
                 f'https://api.track.toggl.com/api/v8/workspaces/{workspace["id"]}/projects',
+                params={"active": "both"},
                 auth=(api_token, "api_token"),
             )
             project = json.loads(response.text)
