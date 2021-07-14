@@ -104,31 +104,6 @@ def test_get_time_entries_good_api(monkeypatch):
         }
     ]
 
-    def mock_get_start_datetime(api_token, since):
-        return datetime.datetime(2021, 4, 1, 0, 0).date()
-
-    monkeypatch.setattr(utils, "get_start_datetime", mock_get_start_datetime)
-
-    with requests_mock.Mocker() as rm:
-        return_value = {
-            "data": {
-                "id": 436694100,
-                "pid": 123,
-                "wid": 777,
-                "start": "2013-03-05T07:58:58.000Z",
-                "duration": 1200,
-                "description": "Meeting with possible clients",
-                "tags": ["billed"],
-            }
-        }
-        rm.get(
-            "https://api.track.toggl.com/api/v8/time_entries?start_date=2021-04-01T00%3A00%3A00-00%3A00&end_date=2021-07-10T00%3A00%3A00-00%3A00",
-            status_code=200,
-            json=return_value,
-        )
-        response = utils.get_time_entries("api_token", days=100)
-    assert response == expected_time_entires
-
 
 def test_get_get_workspaces():
     expected_workspaces = [
