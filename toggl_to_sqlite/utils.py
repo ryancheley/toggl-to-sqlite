@@ -30,8 +30,8 @@ def get_workspaces(api_token):
     if response.status_code == 200:
         workspaces.append(json.loads(response.text))
         for workspace in workspaces[0]:
-            try: 
-                workspace.pop('api_token', None)
+            try:
+                workspace.pop("api_token", None)
             except AttributeError:
                 pass
     return workspaces

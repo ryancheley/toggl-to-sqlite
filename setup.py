@@ -1,7 +1,7 @@
 from setuptools import setup
 import os
 
-VERSION = "0.4.0"
+VERSION = "0.4.1"
 
 
 def get_long_description():
@@ -27,6 +27,11 @@ setup(
         toggl-to-sqlite=toggl_to_sqlite.cli:cli
     """,
     install_requires=["sqlite-utils>=2.4.4", "click", "requests", "requests_mock"],
-    extras_require={"test": ["pytest"]},
+    extras_require={
+        "test": [
+            "pytest",
+            "black==21.5b2",
+        ]
+    },
     tests_require=["toggl-to-sqlite[test]"],
 )
