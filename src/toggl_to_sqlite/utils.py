@@ -1,20 +1,17 @@
-import requests
-import json
 import datetime
+import json
 import math
+
+import requests
 
 
 def get_start_datetime(api_token, since: datetime = None):
-    toggl = requests.get(
-        "https://api.track.toggl.com/api/v8/me", auth=(api_token, "api_token")
-    )
+    toggl = requests.get("https://api.track.toggl.com/api/v8/me", auth=(api_token, "api_token"))
     if toggl.status_code == 200:
         data = json.loads(toggl.text)
         if not since:
             start_time = data["data"]["workspaces"][0]["at"]
-            start_time = datetime.datetime.strptime(
-                start_time, "%Y-%m-%dT%H:%M:%S+00:00"
-            )
+            start_time = datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S+00:00")
         else:
             start_time = since
         return start_time.date()
@@ -24,9 +21,7 @@ def get_start_datetime(api_token, since: datetime = None):
 
 def get_workspaces(api_token):
     workspaces = []
-    response = requests.get(
-        "https://api.track.toggl.com/api/v8/workspaces", auth=(api_token, "api_token")
-    )
+    response = requests.get("https://api.track.toggl.com/api/v8/workspaces", auth=(api_token, "api_token"))
     if response.status_code == 200:
         workspaces.append(json.loads(response.text))
         for workspace in workspaces[0]:
@@ -60,12 +55,8 @@ def get_time_entries(api_token, days, since: datetime = None):
     if days > 0:
         cycles = math.ceil((today - start_date).days / days)
         for cycle in range(cycles):
-            _start_date = (start_date + datetime.timedelta(days=days) * cycle).strftime(
-                "%Y-%m-%dT00:00:00-00:00"
-            )
-            _end_date = (
-                start_date + datetime.timedelta(days=days) * (cycle + 1)
-            ).strftime("%Y-%m-%dT00:00:00-00:00")
+            _start_date = (start_date + datetime.timedelta(days=days) * cycle).strftime("%Y-%m-%dT00:00:00-00:00")
+            _end_date = (start_date + datetime.timedelta(days=days) * (cycle + 1)).strftime("%Y-%m-%dT00:00:00-00:00")
             params = (
                 ("start_date", _start_date),
                 ("end_date", _end_date),
