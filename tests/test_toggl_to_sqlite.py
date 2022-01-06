@@ -1,13 +1,12 @@
-from toggl_to_sqlite import utils
-import pytest
-import json
-import sqlite_utils
-from sqlite_utils.db import ForeignKey
-import pathlib
-import requests
 import datetime
-import random
+import json
+import pathlib
+
+import pytest
 import requests_mock
+import sqlite_utils
+
+from toggl_to_sqlite import utils
 
 
 def load():
@@ -85,24 +84,8 @@ def test_get_projects_good_api(monkeypatch):
 def test_get_time_entries_bad_api():
     api_token = "api_token"
     actual = utils.get_time_entries(api_token=api_token, days=25)
-    expepected = []
-    assert actual == expepected
-
-
-def test_get_time_entries_good_api(monkeypatch):
-    expected_time_entires = [
-        {
-            "data": {
-                "id": 436694100,
-                "pid": 123,
-                "wid": 777,
-                "start": "2013-03-05T07:58:58.000Z",
-                "duration": 1200,
-                "description": "Meeting with possible clients",
-                "tags": ["billed"],
-            }
-        }
-    ]
+    expected = []
+    assert actual == expected
 
 
 def test_get_get_workspaces():
@@ -180,9 +163,7 @@ def test_get_start_datetime_with_good_api_token_and_since():
                 "workspaces": [{"at": "2021-01-01T15:35:47+00:00"}],
             }
         }
-        rm.get(
-            "https://api.track.toggl.com/api/v8/me", status_code=200, json=return_value
-        )
+        rm.get("https://api.track.toggl.com/api/v8/me", status_code=200, json=return_value)
 
         response = utils.get_start_datetime("api_token", expected_start_time)
         assert response == expected_start_time.date()
@@ -204,9 +185,7 @@ def test_get_start_datetime_with_good_api_token_and_blank_since():
                 "workspaces": [{"at": "2021-01-01T15:35:47+00:00"}],
             }
         }
-        rm.get(
-            "https://api.track.toggl.com/api/v8/me", status_code=200, json=return_value
-        )
+        rm.get("https://api.track.toggl.com/api/v8/me", status_code=200, json=return_value)
 
         response = utils.get_start_datetime("api_token")
     print(response)
