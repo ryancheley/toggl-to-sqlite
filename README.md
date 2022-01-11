@@ -4,6 +4,8 @@
 [![GitHub changelog](https://img.shields.io/github/v/release/ryancheley/toggl-to-sqlite?include_prereleases&label=changelog)](https://github.com/ryancheley/toggl-to-sqlite/releases)
 [![Tests](https://github.com/ryancheley/toggl-to-sqlite/workflows/Test/badge.svg)](https://github.com/ryancheley/toggl-to-sqlite/actions?query=workflow%3ATest)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/ryancheley/toggl-to-sqlite/blob/main/LICENSE)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ryancheley/toggl-to-sqlite/main.svg)](https://results.pre-commit.ci/latest/github/ryancheley/toggl-to-sqlite/main)
+
 
 
 Create a SQLite database containing data from your [Toggl](https://toggl.com/) account.
