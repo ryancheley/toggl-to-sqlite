@@ -35,7 +35,7 @@ setup(
         toggl-to-sqlite=toggl_to_sqlite.cli:cli
     """,
     install_requires=["sqlite-utils>=2.4.4", "click", "requests", "requests_mock", "toml"],
-    extras_require={"test": ["pytest", "black", "isort", "coverage", "mypy", "cogapp"]},
+    extras_require={"test": ["pytest", "black", "isort", "coverage", "mypy", "cogapp", "pre-commit"]},
     tests_require=["toggl-to-sqlite[test]"],
     python_requires=">=3.6",
     classifiers=[
