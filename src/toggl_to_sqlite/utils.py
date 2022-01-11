@@ -2,9 +2,10 @@ import datetime
 import math
 
 import requests
+import sqlite_utils
 
 
-def get_start_datetime(api_token, since: datetime = None):
+def get_start_datetime(api_token: str, since: datetime.datetime = None) -> datetime.date:
     toggl = requests.get("https://api.track.toggl.com/api/v8/me", auth=(api_token, "api_token"))
     if toggl.status_code == 200:
         data = toggl.json()
@@ -18,7 +19,7 @@ def get_start_datetime(api_token, since: datetime = None):
         return datetime.date.today()
 
 
-def get_workspaces(api_token):
+def get_workspaces(api_token: str) -> list:
     workspaces = []
     response = requests.get("https://api.track.toggl.com/api/v8/workspaces", auth=(api_token, "api_token"))
     if response.status_code == 200:
@@ -28,7 +29,7 @@ def get_workspaces(api_token):
     return workspaces
 
 
-def get_projects(api_token):
+def get_projects(api_token: str) -> list:
     projects = []
     workspaces = get_workspaces(api_token)
     if len(workspaces) > 0:
@@ -44,7 +45,7 @@ def get_projects(api_token):
     return projects
 
 
-def get_time_entries(api_token, days, since: datetime = None):
+def get_time_entries(api_token: str, days: int, since: datetime.datetime = None) -> list:
     start_date = get_start_datetime(api_token, since)
     today = datetime.date.today()
     data = []
@@ -67,7 +68,7 @@ def get_time_entries(api_token, days, since: datetime = None):
     return data
 
 
-def save_items(items, table, db):
+def save_items(items: list, table: str, db: sqlite_utils.Database) -> None:
     for item in items:
         data = item
         db[table].insert_all(data, pk="id", alter=True, replace=True)

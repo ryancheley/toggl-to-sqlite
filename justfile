@@ -23,7 +23,7 @@ gitclean:
 
 # run mypy on the files
 mypy:
-    mypy src/toggl_to_sqlite/*.py --no-strict-optional
+    mypy src/toggl_to_sqlite/*.py --no-strict-optional --ignore-missing-imports
 
 
 # generates the README.md file --help section
