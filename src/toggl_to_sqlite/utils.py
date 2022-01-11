@@ -1,5 +1,4 @@
 import datetime
-import json
 import math
 
 import requests
@@ -8,7 +7,7 @@ import requests
 def get_start_datetime(api_token, since: datetime = None):
     toggl = requests.get("https://api.track.toggl.com/api/v8/me", auth=(api_token, "api_token"))
     if toggl.status_code == 200:
-        data = json.loads(toggl.text)
+        data = toggl.json()
         if not since:
             start_time = data["data"]["workspaces"][0]["at"]
             start_time = datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S+00:00")
@@ -23,12 +22,9 @@ def get_workspaces(api_token):
     workspaces = []
     response = requests.get("https://api.track.toggl.com/api/v8/workspaces", auth=(api_token, "api_token"))
     if response.status_code == 200:
-        workspaces.append(json.loads(response.text))
+        workspaces.append(response.json())
         for workspace in workspaces[0]:
-            try:
-                workspace.pop("api_token", None)
-            except AttributeError:
-                pass
+            workspace.pop("api_token", None)
     return workspaces
 
 
@@ -42,7 +38,7 @@ def get_projects(api_token):
                 params={"active": "both"},
                 auth=(api_token, "api_token"),
             )
-            project = json.loads(response.text)
+            project = response.json()
             if project:
                 projects.append(project)
     return projects
@@ -66,7 +62,7 @@ def get_time_entries(api_token, days, since: datetime = None):
                 params=params,
                 auth=(api_token, "api_token"),
             )
-            data.append(json.loads(response.text))
+            data.append(response.json())
 
     return data
 

@@ -21,8 +21,8 @@ You will need to first obtain a valid API token for your toggl account. You can 
 
     https://track.toggl.com/profile
 
-    Once you have your API Token enter it at the command line. 
-    
+    Once you have your API Token enter it at the command line.
+
     Authentication tokens written to auth.json
 
 Now you can fetch all of your items from toggl like this:
@@ -33,7 +33,7 @@ Now you can fetch all of your items from toggl like this:
 
     $ toggl-to-sqlite fetch -s 2021-03-13
 
-You can choose to get only `time_entries`, `projects`, or `workspaces` by speciying a type in the argument like this. 
+You can choose to get only `time_entries`, `projects`, or `workspaces` by speciying a type in the argument like this.
 
 To get ONLY your workspaces:
 
@@ -77,4 +77,3 @@ Commands:
 ## Using with Datasette
 
 The SQLite database produced by this tool is designed to be browsed using [Datasette](https://datasette.readthedocs.io/). Use the [datasette-render-timestamps](https://github.com/simonw/datasette-render-timestamps) plugin to improve the display of the timestamp values.
-
