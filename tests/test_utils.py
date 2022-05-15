@@ -112,7 +112,7 @@ def test_get_time_entries(monkeypatch):
             },
         ]
     ]
-    assert actual == expected
+    assert actual[0] == expected[0]
 
 
 def test_get_projects(monkeypatch):
