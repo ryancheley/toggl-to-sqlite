@@ -1,4 +1,8 @@
 site_name: toggl-to-sqlite
+site_description: Create a SQLite database containing data from your Toggl account.
+site_url: https://toggl-to-sqlite.readthedocs.io/en/latest/
+repo_name: ryancheley/toggl-to-sqlite
+repo_url: https://github.com/ryancheley/toggl-to-sqlite
 theme:
   name: readthedocs
   highlightjs: true

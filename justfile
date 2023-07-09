@@ -27,6 +27,6 @@ mypy:
 
 
 # generates the README.md file --help section
-cog:
+docs:
     cog -r README.md
     cp README.md docs/index.md
