@@ -29,4 +29,4 @@ mypy:
 # generates the README.md file --help section
 cog:
     cog -r README.md
-    pandoc README.md -o README.rst
+    cp README.md docs/index.md
