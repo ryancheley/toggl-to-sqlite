@@ -1,5 +1,52 @@
+[project]
+name = "toggl-to-sqlite"
+version = "0.7.0"
+description = "ACreate a SQLite database containing data from your Toggl account"
+readme = "README.md"
+authors = [{name = "Ryan Cheley"}]
+license = {text = "Apache-2.0"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Utilities",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "sqlite-utils>=2.4.4",
+    "click",
+    "requests",
+    "requests_mock",
+    "toml",
+    "click",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+Issues = "https://github.com/ryancheley/toggl-to-sqlite/issues"
+CI = "https://github.com/ryancheley/toggl-to-sqlite/actions"
+Changelog = "https://github.com/ryancheley/toggl-to-sqlite/releases"
+Documentation = "https://github.com/ryancheley/toggl-to-sqlite/blob/main/README.md"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "black",
+    "isort",
+    "coverage",
+    "mypy",
+    "cogapp",
+    "pre-commit"
+]
+
 [tool.black]
 line-length = 130
-target-version = ['py39']
+target-version = ['py311']
 include = '\.pyi?$'
 exclude = '(venv)'
