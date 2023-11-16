@@ -5,7 +5,9 @@
 #    pip-compile
 #
 click==8.1.4
-    # via mkdocs
+    # via
+    #   mkdocs
+    #   mkdocstrings
 colorama==0.4.6
     # via griffe
 ghp-import==2.1.0
@@ -39,9 +41,10 @@ mkdocs==1.5.3
     #   mkdocstrings
 mkdocs-autorefs==0.4.1
     # via mkdocstrings
-mkdocstrings[python]==0.23.0
+mkdocstrings[python]==0.24.0
     # via
     #   -r docs/requirements.in
+    #   mkdocstrings
     #   mkdocstrings-python
 mkdocstrings-python==1.1.2
     # via mkdocstrings
@@ -50,7 +53,9 @@ packaging==23.1
 pathspec==0.11.2
     # via mkdocs
 platformdirs==3.10.0
-    # via mkdocs
+    # via
+    #   mkdocs
+    #   mkdocstrings
 pymdown-extensions==10.0.1
     # via mkdocstrings
 python-dateutil==2.8.2
