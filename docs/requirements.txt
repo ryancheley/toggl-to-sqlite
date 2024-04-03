@@ -41,10 +41,9 @@ mkdocs==1.5.3
     #   mkdocstrings
 mkdocs-autorefs==0.4.1
     # via mkdocstrings
-mkdocstrings[python]==0.24.1
+mkdocstrings[python]==0.24.2
     # via
     #   -r docs/requirements.in
-    #   mkdocstrings
     #   mkdocstrings-python
 mkdocstrings-python==1.1.2
     # via mkdocstrings
