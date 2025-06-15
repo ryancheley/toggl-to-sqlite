@@ -75,3 +75,50 @@ def save_items(items: list, table: str, db: sqlite_utils.Database) -> None:
             db[table].insert_all(data, pk="id", alter=True, replace=True)
         except AttributeError:
             print(item)
+
+
+def get_last_sync_time(db: sqlite_utils.Database, table_name: str) -> datetime.datetime:
+    """Get the last sync time for a specific table."""
+    since_table = f"{table_name}_since"
+
+    if since_table not in db.table_names():
+        return None
+
+    try:
+        # Explicitly query for row with id=1
+        rows = list(db[since_table].rows_where("id = ?", [1]))
+        if not rows:
+            return None
+        row = rows[0]
+        return datetime.datetime.fromisoformat(row["since"])
+    except (sqlite_utils.db.NotFoundError, KeyError, IndexError, ValueError):
+        return None
+
+
+def update_sync_time(db: sqlite_utils.Database, table_name: str, sync_time: datetime.datetime) -> None:
+    """Update the last sync time for a specific table."""
+    since_table = f"{table_name}_since"
+
+    db[since_table].insert({"id": 1, "since": sync_time.isoformat()}, pk="id", replace=True, alter=True)
+
+
+def get_effective_since_date(
+    api_token: str, table_name: str, db: sqlite_utils.Database, user_since: datetime.datetime = None
+) -> datetime.datetime:
+    """Get the effective 'since' date to use for fetching data.
+
+    Priority:
+    1. User-provided since parameter
+    2. Last sync time from database
+    3. Workspace creation date (fallback)
+    """
+    if user_since:
+        return user_since
+
+    # Check for last sync time
+    last_sync = get_last_sync_time(db, table_name)
+    if last_sync:
+        return last_sync
+
+    # Fallback to workspace creation date
+    return get_start_datetime(api_token)
