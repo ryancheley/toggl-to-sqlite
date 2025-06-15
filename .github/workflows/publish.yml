@@ -70,7 +70,9 @@ jobs:
         fetch-depth: 0
     - name: Check if tag is on main branch
       run: |
-        if ! git branch --contains ${{ github.ref_name }} | grep -q "main\|master"; then
+        # Fetch main branch to check if tag is on it
+        git fetch origin main:main
+        if ! git merge-base --is-ancestor ${{ github.sha }} origin/main; then
           echo "Tag ${{ github.ref_name }} is not on main branch. Skipping PyPI publish."
           exit 1
         fi
