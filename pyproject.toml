@@ -1,19 +1,20 @@
 [project]
 name = "toggl-to-sqlite"
-version = "0.7.0"
-description = "ACreate a SQLite database containing data from your Toggl account"
+dynamic = ["version"]
+description = "Create a SQLite database containing data from your Toggl account"
 readme = "README.md"
 authors = [{name = "Ryan Cheley"}]
 license = {text = "Apache-2.0"}
+requires-python = ">=3.9"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Topic :: Utilities",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
     "sqlite-utils>=2.4.4",
@@ -21,12 +22,21 @@ dependencies = [
     "requests",
     "requests_mock",
     "toml",
-    "click",
+    "packaging>=25.0",
 ]
 
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/toggl_to_sqlite/_version.py"
+
+[project.scripts]
+toggl-to-sqlite = "toggl_to_sqlite.cli:cli"
 
 [project.urls]
 Issues = "https://github.com/ryancheley/toggl-to-sqlite/issues"
@@ -37,16 +47,46 @@ Documentation = "https://github.com/ryancheley/toggl-to-sqlite/blob/main/README.
 [project.optional-dependencies]
 test = [
     "pytest",
-    "black",
-    "isort",
+    "ruff",
     "coverage",
     "mypy",
     "cogapp",
     "pre-commit"
 ]
 
-[tool.black]
+[tool.ruff]
 line-length = 130
-target-version = ['py311']
-include = '\.pyi?$'
-exclude = '(venv)'
+target-version = "py310"
+
+[tool.ruff.lint]
+extend-select = ["I"]  # Enable isort rules
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "src/toggl_to_sqlite/_version.py",
+    "*/_version.py"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[dependency-groups]
+dev = [
+    "hatch-vcs>=0.5.0",
+    "hatchling>=1.27.0",
+]

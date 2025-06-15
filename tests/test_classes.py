@@ -4,7 +4,7 @@ class MockResponseGetStartDateTime:
 
     @staticmethod
     def json():
-        return {"data": {"workspaces": [{"at": "2019-12-04T05:14:38+00:00"}]}}
+        return [{"at": "2019-12-04T05:14:38+00:00"}]
 
 
 class MockResponseWorkspaces:
