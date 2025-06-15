@@ -22,6 +22,12 @@ Save data from [Toggl](https://toggl.com/) to a SQLite database using the modern
 
 ## How to install
 
+### With uv (recommended)
+
+    $ uv add toggl-to-sqlite
+
+### With pip
+
     $ pip install toggl-to-sqlite
 
 ## Usage
