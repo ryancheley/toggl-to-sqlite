@@ -206,3 +206,18 @@ def test_get_start_datetime_since_passed_with_no_response(monkeypatch):
     expected = datetime.date.today()
     actual = get_start_datetime(api_token=api_token, since=since)
     assert actual == expected
+
+
+def test_save_items_with_attribute_error(capsys):
+    """Test save_items exception handling when data causes AttributeError"""
+    db = sqlite_utils.Database(":memory:")
+
+    # Create data that will cause AttributeError when insert_all is called
+    # Using a string instead of expected dict/list structure
+    problematic_items = ["not_a_dict"]
+
+    save_items(problematic_items, "test_table", db)
+
+    # Check that the exception was caught and item was printed
+    captured = capsys.readouterr()
+    assert "not_a_dict" in captured.out
