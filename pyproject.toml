@@ -57,6 +57,10 @@ test = [
 [tool.ruff]
 line-length = 130
 target-version = "py310"
+exclude = [
+    "_version.py",
+    "src/toggl_to_sqlite/_version.py"
+]
 
 [tool.ruff.lint]
 extend-select = ["I"]  # Enable isort rules
