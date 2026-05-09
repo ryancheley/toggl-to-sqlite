@@ -5,10 +5,12 @@
 
 version: 2
 updates:
-  - package-ecosystem: pip # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "uv"
+    directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
+      day: "friday"
+      time: "09:00"
     groups:
         python-packages:
           patterns:
@@ -17,4 +19,4 @@ updates:
       prefix: "pip prod"
       include: "scope"
     labels:
-      - "maintenance"
+      - "🛠️ maintenance"
