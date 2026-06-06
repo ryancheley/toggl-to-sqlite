@@ -4,7 +4,7 @@
 [![GitHub changelog](https://img.shields.io/github/v/release/ryancheley/toggl-to-sqlite?include_prereleases&label=changelog)](https://github.com/ryancheley/toggl-to-sqlite/releases)
 [![Tests](https://github.com/ryancheley/toggl-to-sqlite/workflows/Test/badge.svg)](https://github.com/ryancheley/toggl-to-sqlite/actions?query=workflow%3ATest)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/ryancheley/toggl-to-sqlite/blob/main/LICENSE)
-[![Python](https://img.shields.io/badge/python-3.9+-blue)](https://pypi.org/project/toggl-to-sqlite/)
+[![Python](https://img.shields.io/badge/python-3.10+-blue)](https://pypi.org/project/toggl-to-sqlite/)
 [![Code style: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ryancheley/toggl-to-sqlite/main.svg)](https://results.pre-commit.ci/latest/github/ryancheley/toggl-to-sqlite/main)
 
@@ -17,7 +17,7 @@ Save data from [Toggl](https://toggl.com/) to a SQLite database using the modern
 - ✅ **Flexible Date Ranges** - Fetch all data or specify custom date ranges
 - ✅ **SQLite Storage** - Portable, queryable database format
 - ✅ **100% Test Coverage** - Reliable and well-tested codebase
-- ✅ **Modern Python** - Supports Python 3.9+
+- ✅ **Modern Python** - Supports Python 3.10+
 - ✅ **Modern Tooling** - Built with uv, ruff, and automated versioning
 
 ## How to install
@@ -102,7 +102,7 @@ This project uses modern Python tooling for development.
 
 ### Prerequisites
 
-- Python 3.9+
+- Python 3.10+
 - [uv](https://docs.astral.sh/uv/) (recommended) or pip
 
 ### Setup with uv (recommended)
@@ -166,5 +166,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for more information on contributing to t
 
 ## Requirements
 
-- Python 3.9 or higher
+- Python 3.10 or higher
 - Valid Toggl account with API access
