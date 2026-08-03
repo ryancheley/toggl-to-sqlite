@@ -38,7 +38,7 @@ def auth(auth):
         )
         + "\n"
     )
-    click.echo("Authentication tokens written to {}".format(auth))
+    click.echo(f"Authentication tokens written to {auth}")
 
 
 @cli.command()
