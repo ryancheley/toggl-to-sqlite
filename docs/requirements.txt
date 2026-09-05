@@ -4,7 +4,7 @@
 #
 #    pip-compile
 #
-click==8.1.4
+click==8.5.0
     # via mkdocs
 colorama==0.4.6
     # via griffe
@@ -12,12 +12,6 @@ ghp-import==2.1.0
     # via mkdocs
 griffe==1.7.3
     # via mkdocstrings-python
-importlib-metadata==8.7.0
-    # via
-    #   markdown
-    #   mkdocs
-    #   mkdocs-get-deps
-    #   mkdocstrings
 jinja2==3.1.2
     # via
     #   mkdocs
@@ -58,7 +52,7 @@ mkdocstrings==0.30.1
     #   mkdocstrings-python
 mkdocstrings-python==1.16.12
     # via mkdocstrings
-packaging==26.2
+packaging==26.3
     # via mkdocs
 pathspec==0.11.2
     # via mkdocs
@@ -82,5 +76,3 @@ typing-extensions==4.14.0
     # via mkdocstrings-python
 watchdog==3.0.0
     # via mkdocs
-zipp==3.23.0
-    # via importlib-metadata
