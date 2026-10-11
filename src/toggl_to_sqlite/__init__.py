@@ -1,3 +1,5 @@
+"""Toggl to SQLite: save Toggl account data to a SQLite database."""
+
 try:
     from ._version import __version__
 except ImportError:

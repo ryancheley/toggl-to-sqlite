@@ -4,9 +4,9 @@ test:
     coverage html --omit=src/toggl_to_sqlite/cli.py--omit=src/toggl_to_sqlite/cli.py
     open htmlcov/index.html
 
-# runs the pre-commit check command
-check: mypy
-    pre-commit run --all-files
+# runs all prek hooks (ruff, gitleaks, zizmor, ty, ...)
+check:
+    prek run --all-files
 
 # opens the coverage index
 coverage:
@@ -21,9 +21,9 @@ gitclean:
     git branch | grep -v "main" | grep -v "dev"| xargs git branch -D
 
 
-# run mypy on the files
-mypy:
-    mypy src/toggl_to_sqlite/*.py --no-strict-optional --ignore-missing-imports
+# run the ty type checker on the source
+typecheck:
+    uv run --with ty ty check src/
 
 
 # generates the README.md file --help section

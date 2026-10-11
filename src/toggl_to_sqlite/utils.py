@@ -1,3 +1,5 @@
+"""Helpers for fetching Toggl data and persisting it to SQLite."""
+
 import datetime
 import math
 
@@ -5,21 +7,23 @@ import requests
 import sqlite_utils
 
 
-def get_start_datetime(api_token: str, since: datetime.datetime = None) -> datetime.date:
+def get_start_datetime(api_token: str, since: datetime.date | None = None) -> datetime.date:
+    """Return the date to start fetching from, defaulting to the workspace creation date."""
     toggl = requests.get("https://api.track.toggl.com/api/v9/workspaces", auth=(api_token, "api_token"))
     if toggl.status_code == 200:
-        data = toggl.json()
-        if not since:
-            start_time = data[0]["at"]
-            start_time = datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S+00:00")
+        if since is None:
+            data = toggl.json()
+            start_time: datetime.date = datetime.datetime.strptime(data[0]["at"], "%Y-%m-%dT%H:%M:%S+00:00")
         else:
             start_time = since
-        return start_time.date()
+        # since may already be a date; only datetimes need their time stripped
+        return start_time.date() if isinstance(start_time, datetime.datetime) else start_time
     else:
         return datetime.date.today()
 
 
 def get_workspaces(api_token: str) -> list:
+    """Return the Toggl workspaces for the authenticated account."""
     workspaces = []
     response = requests.get("https://api.track.toggl.com/api/v9/workspaces", auth=(api_token, "api_token"))
     if response.status_code == 200:
@@ -30,6 +34,7 @@ def get_workspaces(api_token: str) -> list:
 
 
 def get_projects(api_token: str) -> list:
+    """Return the projects across all of the account's workspaces."""
     projects = []
     workspaces = get_workspaces(api_token)
     if len(workspaces) > 0:
@@ -45,7 +50,8 @@ def get_projects(api_token: str) -> list:
     return projects
 
 
-def get_time_entries(api_token: str, days: int, since: datetime.datetime = None) -> list:
+def get_time_entries(api_token: str, days: int, since: datetime.date | None = None) -> list:
+    """Return time entries fetched in ``days``-sized windows since the start date."""
     start_date = get_start_datetime(api_token, since)
     today = datetime.date.today()
     data = []
@@ -69,15 +75,16 @@ def get_time_entries(api_token: str, days: int, since: datetime.datetime = None)
 
 
 def save_items(items: list, table: str, db: sqlite_utils.Database) -> None:
+    """Insert each batch of items into ``table``, keyed on id."""
     for item in items:
         data = item
         try:
-            db[table].insert_all(data, pk="id", alter=True, replace=True)
+            db[table].insert_all(data, pk="id", alter=True, replace=True)  # ty: ignore[unresolved-attribute]
         except AttributeError:
             print(item)
 
 
-def get_last_sync_time(db: sqlite_utils.Database, table_name: str) -> datetime.datetime:
+def get_last_sync_time(db: sqlite_utils.Database, table_name: str) -> datetime.datetime | None:
     """Get the last sync time for a specific table."""
     since_table = f"{table_name}_since"
 
@@ -99,12 +106,12 @@ def update_sync_time(db: sqlite_utils.Database, table_name: str, sync_time: date
     """Update the last sync time for a specific table."""
     since_table = f"{table_name}_since"
 
-    db[since_table].insert({"id": 1, "since": sync_time.isoformat()}, pk="id", replace=True, alter=True)
+    db[since_table].insert({"id": 1, "since": sync_time.isoformat()}, pk="id", replace=True, alter=True)  # ty: ignore[unresolved-attribute]
 
 
 def get_effective_since_date(
-    api_token: str, table_name: str, db: sqlite_utils.Database, user_since: datetime.datetime = None
-) -> datetime.datetime:
+    api_token: str, table_name: str, db: sqlite_utils.Database, user_since: datetime.date | None = None
+) -> datetime.date:
     """Get the effective 'since' date to use for fetching data.
 
     Priority:

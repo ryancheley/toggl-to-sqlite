@@ -1,0 +1,9 @@
+# zizmor configuration
+# Require actions to be pinned to a tag/ref rather than a full commit hash.
+# Tags are kept current by Dependabot, so hash-pinning adds maintenance without
+# meaningful benefit for this project.
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        "*": ref-pin

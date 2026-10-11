@@ -1,3 +1,5 @@
+"""Command-line interface for saving Toggl data to a SQLite database."""
+
 import json
 
 import click
@@ -9,7 +11,7 @@ from . import utils
 @click.group()
 @click.version_option()
 def cli():
-    "Save Toggl data to a SQLite database"
+    """Save Toggl data to a SQLite database."""
 
 
 @cli.command()
@@ -21,7 +23,7 @@ def cli():
     help="Path to save tokens to, defaults to auth.json",
 )
 def auth(auth):
-    "Save authentication credentials to a JSON file"
+    """Save authentication credentials to a JSON file."""
     click.echo("Visit this page and sign in with your Toggl account:\n")
     click.echo("https://track.toggl.com/profile")
     api_token = input(
@@ -63,7 +65,7 @@ def auth(auth):
     "-t", "--type", default=["time_entries", "workspaces", "projects"], required=True, multiple=True, help="Data types to fetch"
 )
 def fetch(db_path, auth, days, since, force_full, type):
-    "Save Toggl data to a SQLite database"
+    """Save Toggl data to a SQLite database."""
     import datetime
 
     auth = json.load(open(auth))
@@ -85,7 +87,7 @@ def fetch(db_path, auth, days, since, force_full, type):
         # Only use automatic since if no explicit since date is provided
         if effective_since and not since and not force_full:
             # Convert to date for comparison if it's a datetime
-            effective_date = effective_since.date() if hasattr(effective_since, "date") else effective_since
+            effective_date = effective_since.date() if isinstance(effective_since, datetime.datetime) else effective_since
             days_since_effective = (datetime.datetime.now().date() - effective_date).days + 1  # Add 1 to ensure overlap
             click.echo(f"📅 Fetching time entries since {effective_date} ({days_since_effective} days)")
             time_entries = utils.get_time_entries(api_token=auth["api_token"], days=days_since_effective, since=effective_since)
