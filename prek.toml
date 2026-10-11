@@ -1,0 +1,54 @@
+# Configuration file for `prek`, a git hook framework written in Rust.
+# See https://prek.j178.dev for more information.
+#:schema https://www.schemastore.org/prek.json
+
+[[repos]]
+repo = "https://github.com/astral-sh/ruff-pre-commit"
+rev = "v0.17.0"
+hooks = [
+  {
+    id = "ruff-check",
+    args = [
+      "--fix",
+      "--exit-non-zero-on-fix"
+    ]
+  },
+  { id = "ruff-format" }
+]
+
+[[repos]]
+repo = "https://github.com/pre-commit/pre-commit-hooks"
+rev = "v6.0.0"
+hooks = [
+  { id = "trailing-whitespace" },
+  { id = "end-of-file-fixer" },
+  { id = "check-yaml" },
+  { id = "check-added-large-files" }
+]
+
+[[repos]]
+repo = "https://github.com/gitleaks/gitleaks"
+rev = "v8.30.1"
+hooks = [
+  { id = "gitleaks" }
+]
+
+[[repos]]
+repo = "https://github.com/woodruffw/zizmor-pre-commit"
+rev = "v1.30.1"
+hooks = [
+  { id = "zizmor" }
+]
+
+[[repos]]
+repo = "local"
+hooks = [
+  {
+    id = "ty",
+    name = "ty type check",
+    entry = "uv run --with ty ty check src/",
+    language = "system",
+    types = ["python"],
+    pass_filenames = false
+  }
+]

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Simple script to bump version using git tags.
+"""Bump the project version using git tags.
+
 Usage:
   python bump-version.py patch   # 0.7.1 -> 0.7.2
   python bump-version.py minor   # 0.7.1 -> 0.8.0
@@ -52,6 +52,7 @@ def create_tag(new_version):
 
 
 def main():
+    """Parse the bump type argument and create the new version tag."""
     if len(sys.argv) != 2 or sys.argv[1] not in ["patch", "minor", "major"]:
         print(__doc__)
         sys.exit(1)

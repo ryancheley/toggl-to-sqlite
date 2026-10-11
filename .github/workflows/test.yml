@@ -2,6 +2,9 @@ name: Test
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -12,6 +15,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        persist-credentials: false
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
@@ -22,7 +26,16 @@ jobs:
       run: uv sync --extra test
     - name: Run tests
       run: uv run pytest
-    - name: Run linting
-      run: uv run ruff check .
-    - name: Check formatting
-      run: uv run ruff format --check .
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+    - name: Install dependencies
+      run: uv sync --extra test
+    - name: Run prek hooks
+      run: uv run prek run --all-files --show-diff-on-failure

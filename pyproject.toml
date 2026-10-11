@@ -48,24 +48,32 @@ test = [
     "pytest",
     "ruff",
     "coverage",
-    "mypy",
+    "ty",
     "cogapp",
-    "pre-commit"
+    "prek"
 ]
 
 [tool.ruff]
 line-length = 130
 target-version = "py310"
-exclude = [
+# extend-exclude keeps ruff's defaults (build/, dist/, .venv, ...) alongside these
+extend-exclude = [
     "_version.py",
-    "src/toggl_to_sqlite/_version.py"
+    "src/toggl_to_sqlite/_version.py",
+    "build",  # stale build artifact, not source
 ]
 
 [tool.ruff.lint]
 # Pin to ruff's historical default rules; 0.16.0 broadened defaults (DTZ/SIM/UP/...).
 # ponytail: restores prior behavior, keeps dep bumps scoped. Opt into new rules deliberately later.
 select = ["E4", "E7", "E9", "F"]
-extend-select = ["I"]  # Enable isort rules
+extend-select = ["I", "D"]  # isort + pydocstyle (docstring) rules
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]  # docstrings not required in tests
 
 [tool.ruff.format]
 quote-style = "double"
