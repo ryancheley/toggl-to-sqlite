@@ -79,7 +79,7 @@ def save_items(items: list, table: str, db: sqlite_utils.Database) -> None:
     for item in items:
         data = item
         try:
-            db[table].insert_all(data, pk="id", alter=True, replace=True)  # ty: ignore[unresolved-attribute]
+            db[table].insert_all(data, pk="id", alter=True, replace=True)  # ty: ignore[missing-union-attribute]
         except AttributeError:
             print(item)
 
@@ -106,7 +106,7 @@ def update_sync_time(db: sqlite_utils.Database, table_name: str, sync_time: date
     """Update the last sync time for a specific table."""
     since_table = f"{table_name}_since"
 
-    db[since_table].insert({"id": 1, "since": sync_time.isoformat()}, pk="id", replace=True, alter=True)  # ty: ignore[unresolved-attribute]
+    db[since_table].insert({"id": 1, "since": sync_time.isoformat()}, pk="id", replace=True, alter=True)  # ty: ignore[missing-union-attribute]
 
 
 def get_effective_since_date(
