@@ -9,7 +9,7 @@ workflows:
         - 'actions/setup-python@v7.1.0'
         - 'actions/upload-artifact@v7.0.2'
         - 'astral-sh/setup-uv@v10.3.3'
-        - 'pypa/gh-action-pypi-publish@v1.14.2'
+        - 'pypa/gh-action-pypi-publish@v1.14.3'
         - 'sigstore/gh-action-sigstore-python@v3.5.0'
     '.github/workflows/test.yml':
         - 'actions/checkout@v7.0.1'
@@ -51,9 +51,9 @@ dependencies:
         commit: 'sha1-68559e99cc807c1eb7e9238fd43a15bba460eec2'
         owner_id: 115962839
         repo_id: 846733598
-    'pypa/gh-action-pypi-publish@v1.14.2':
-        ref: 'v1.14.2'
-        commit: 'sha1-dc37677b2e1c63e2034f94d8a5b11f265b73ba33'
+    'pypa/gh-action-pypi-publish@v1.14.3':
+        ref: 'v1.14.3'
+        commit: 'sha1-7245906fb61fa33a13554f9d5fb856fe61758086'
         owner_id: 647025
         repo_id: 178055147
         uses:
