@@ -5,20 +5,21 @@ on:
     tags:
       - "v*"
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   build:
     name: Build distribution
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7.0.1
       with:
         fetch-depth: 0
         persist-credentials: false
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v7.1.0
       with:
         python-version: "3.x"
     - name: Install build dependencies
@@ -26,7 +27,7 @@ jobs:
     - name: Build distributions
       run: python -m build
     - name: Store the distribution packages
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: python-package-distributions
         path: dist/
@@ -35,21 +36,23 @@ jobs:
   test:
     name: Test package
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       matrix:
         python-version: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7.0.1
       with:
         fetch-depth: 0
         persist-credentials: false
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v7.1.0
       with:
         python-version: ${{ matrix.python-version }}
         allow-prereleases: true
     - name: Install uv
-      uses: astral-sh/setup-uv@v4
+      uses: astral-sh/setup-uv@v10.3.3
       with:
         enable-cache: false
     - name: Install dependencies
@@ -68,10 +71,11 @@ jobs:
       name: pypi
       url: https://pypi.org/p/toggl-to-sqlite
     permissions:
+      contents: read
       id-token: write
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7.0.1
       with:
         fetch-depth: 0
         persist-credentials: false
@@ -88,12 +92,12 @@ jobs:
         fi
         echo "Tag $GH_REF_NAME is on main branch. Proceeding with PyPI publish."
     - name: Download all the dists
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8.0.2
       with:
         name: python-package-distributions
         path: dist/
     - name: Publish distribution to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
+      uses: pypa/gh-action-pypi-publish@v1.14.2
 
   github-release:
     name: Create Github Release
@@ -105,12 +109,12 @@ jobs:
       id-token: write
     steps:
     - name: Download all the dists
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8.0.2
       with:
         name: python-package-distributions
         path: dist/
     - name: Sign the dists with Sigstore
-      uses: sigstore/gh-action-sigstore-python@v3.0.0
+      uses: sigstore/gh-action-sigstore-python@v3.5.0
       with:
         inputs: >-
           ./dist/*.tar.gz
@@ -148,12 +152,12 @@ jobs:
       id-token: write
     steps:
     - name: Download all the dists
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8.0.2
       with:
         name: python-package-distributions
         path: dist/
     - name: Publish distribution to TestPyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
+      uses: pypa/gh-action-pypi-publish@v1.14.2
       with:
         repository-url: https://test.pypi.org/legacy/
         skip-existing: true

@@ -22,3 +22,9 @@ updates:
       include: "scope"
     labels:
       - "🛠️ maintenance"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
